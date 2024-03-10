@@ -1,0 +1,85 @@
+{% include 'header.html' %}
+{% extends 'base.html' %}
+
+{% block title %}Restaurants{% endblock %}
+{% block content %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-sm-12">
+    <div class="d-flex justify-content-center align-items-center" style="margin-top:150px">
+        <img src="{{url_for('static',filename='cafe.png')}}" alt="" style="height:150px;">
+        <h1 class="ms-3" style="font-weight:50px">Cafe and Wi-Fi</h1>
+        <img src="{{ url_for('static', filename='wifi.png') }}" alt="" style="height:150px;">
+
+    </div>
+<!--        <table class="table" style="color:white">-->
+<!--            <thead>-->
+<!--                <tr><th>S No.</th>-->
+<!--                    <th>Name</th>-->
+<!--                    <th>Location</th>-->
+<!--                    <th>Rating</th>-->
+<!--                    <th>Map Link</th>-->
+<!--                    <th>Image Link</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--                {% for cafe in cafes %}-->
+<!--                <tr>-->
+<!--                    <td>{{cafe.id}}</td>-->
+<!--                    <td>{{ cafe.name }}</td>-->
+<!--                    <td>{{ cafe.location }}</td>-->
+<!--                    <td>{{ cafe.rating }}</td>-->
+<!--                    <td><a href="{{ cafe.map_url }}">Maps Link</a></td>-->
+<!--                    <td><a href="{{ cafe.img_url }}"> Image Link</a> </td>-->
+<!--                </tr>-->
+<!--                {% endfor %}-->
+<!--            </tbody>-->
+<!--        </table>-->
+
+<div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top:250px;">
+    {% for cafe in cafes %}
+    <div class="card-group">
+        <div class="col">
+            <a href="{{url_for('show_cafe', cafe_id=cafe.id)}}">
+                <div class="card" style="margin: 50px">
+                    <img src="{{ cafe.img_url }}" class="card-img-top " alt="..." style="height: 225px; width: 100%; display: block;">
+                    <div class="card-body" style="height:6rem;">
+                        <h5 class="card-title">{{ cafe.name }}</h5>
+                        <p class="card-text">{{ cafe.location }}</p>
+                    </div>
+    <!--                <ul class="list-group list-group-flush">-->
+    <!--                <li class="list-group-item">Has Sockets: {{cafe.has_sockets}}</li>-->
+    <!--                <li class="list-group-item">Has Toilet: {{cafe.has_toilet}}</li>-->
+    <!--                <li class="list-group-item">Has Wi-Fi: {{cafe.has_wifi}}</li>-->
+    <!--                <li class="list-group-item">Can Take Calls: {{cafe.can_take_calls}}</li>-->
+    <!--                </ul>-->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Has Sockets: <span class="tick">{{ "✅" if cafe.has_sockets else "❌" }}</span></li>
+                        <li class="list-group-item">Has Toilet: <span class="tick">{{ "✅" if cafe.has_toilet else "❌" }}</span></li>
+                        <li class="list-group-item">Has Wi-Fi: <span class="tick">{{ "✅" if cafe.has_wifi else "❌" }}</span></li>
+                        <li class="list-group-item">Can Take Calls: <span class="tick">{{ "✅" if cafe.can_take_calls else "❌" }}</span></li>
+                    </ul>
+
+        <!-- Only show delete button if user id is 1 (admin user) -->
+<!--          {% if current_user.id == 1: %}-->
+<!--                           {% endif %}-->
+                 {% if current_user.id == 1 or (current_user.is_authenticated and current_user.id == cafe.user_id) %}
+                    <form action="{{ url_for('delete', cafe_id=cafe.id) }}" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                {% endif %}
+
+
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+  </div>
+</div>
+<!--    <div class="add" style="height:25px;">-->
+<!--        <p><a href="{{ url_for('add_cafe') }}" style="font-size:25px; position:relative; left:550px; background-color:#333;">Add more cafes</a></p>-->
+<!--    </div>-->
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+{% block content %}
+
+{% if cafes: %}
+
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center" style="margin-top:50px" >
+    <div class="d-flex flex-wrap justify-content-around">
+        {% for cafe in cafes %}
+        <div class="col mb-4">
+            <a href="{{url_for('show_cafe', cafe_id=cafe.id)}}">
+                <div class="card">
+                    <img class="card-img-top" src="{{ cafe.img_url }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ cafe.name }}</h5>
+                        <p class="card-text">{{ cafe.location }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+    {% else %}
+        <p>{{ error }}</p>
+{% endif %}
+{% include 'footer.html' %}
+{% endblock%}
