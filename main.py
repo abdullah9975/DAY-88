@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 from forms import RegisterForm, LoginForm
 from flask import Flask, render_template, redirect, url_for, request, abort, flash
@@ -20,7 +21,7 @@ class Base(DeclarativeBase):
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///cafes.db"
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # Configure Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
